@@ -3,4 +3,108 @@
                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
+    <changeSet id="1.0-create-RoomType-table" author="gebura">
+
+        <preConditions onFail="CONTINUE" onError="CONTINUE">
+            <not>
+                <tableExists tableName="RoomType"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="RoomType">
+            <column name="roomType" type="VARCHAR(30)">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="capacity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="1.0-create-room-table" author="gebura">
+
+        <preConditions onFail="CONTINUE" onError="CONTINUE">
+            <not>
+                <tableExists tableName="Room"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="Room">
+            <column name="id" type="INT" autoIncrement="false">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="roomType" type="VARCHAR(30)">
+                <constraints foreignKeyName="fk_Room_RoomType_roomType"
+                             references="RoomType(roomType)"/>
+            </column>
+        </createTable>
+
+    </changeSet>
+
+    <changeSet id="1.0-add-room-types-to-RoomType-table" author="gebura">
+
+        <preConditions onFail="CONTINUE" onError="CONTINUE">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM RoomType
+            </sqlCheck>
+        </preConditions>
+
+        <insert tableName="RoomType">
+            <column name="roomType" value="BASIC"/>
+            <column name="capacity" value="4"/>
+        </insert>
+
+        <insert tableName="RoomType">
+            <column name="roomType" value="SUITE"/>
+            <column name="capacity" value="6"/>
+        </insert>
+
+        <insert tableName="RoomType">
+            <column name="roomType" value="PENTHOUSE"/>
+            <column name="capacity" value="8"/>
+        </insert>
+
+    </changeSet>
+
+    <changeSet id="1.0-add-default-rooms" author="gebura">
+
+        <preConditions>
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM Room
+            </sqlCheck>
+        </preConditions>
+
+        <insert tableName="Room">
+            <column name="id" value="101"/>
+            <column name="roomType" value="BASIC" />
+        </insert>
+
+        <insert tableName="Room">
+            <column name="id" value="102"/>
+            <column name="roomType" value="BASIC" />
+        </insert>
+
+        <insert tableName="Room">
+            <column name="id" value="103"/>
+            <column name="roomType" value="BASIC" />
+        </insert>
+
+        <insert tableName="Room">
+            <column name="id" value="201"/>
+            <column name="roomType" value="SUITE" />
+        </insert>
+
+        <insert tableName="Room">
+            <column name="id" value="202"/>
+            <column name="roomType" value="SUITE" />
+        </insert>
+
+        <insert tableName="Room">
+            <column name="id" value="301"/>
+            <column name="roomType" value="PENTHOUSE" />
+        </insert>
+
+    </changeSet>
+
 </databaseChangeLog>
