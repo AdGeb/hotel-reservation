@@ -1,0 +1,36 @@
+version: '3.7'
+
+services:
+  mysql-container:
+    image: mysql:latest
+    restart: always
+    ports:
+    - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=hotel_reservation_db
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=root
+    volumes:
+    - hotel_reservation_volume:/data/mysql-container
+    networks:
+      - hotel_reservation_network
+
+  hotel-reservation:
+    image: hotel-reservation
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql-container
+    networks:
+      - hotel_reservation_network
+
+
+networks:
+  hotel_reservation_network:
+volumes:
+  hotel_reservation_volume: {}
