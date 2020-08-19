@@ -9,6 +9,6 @@ import javax.persistence.Id;
 @Entity
 public class RoomType {
     @Id
-    private String roomType;
+    private String type;
     private Integer capacity;
 }

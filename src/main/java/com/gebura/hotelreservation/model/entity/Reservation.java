@@ -4,18 +4,25 @@ import lombok.Data;
 
 import javax.persistence.*;
 
+import java.time.LocalDateTime;
+
 import static javax.persistence.FetchType.LAZY;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Data
 @Entity
-public class Room {
+public class Reservation {
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     private Integer id;
 
     @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "roomType")
-    private RoomType roomType;
-}
+    @JoinColumn(name = "roomId")
+    private Room room;
 
+    private String username;
+    private Integer peopleToAccommodate;
+    private LocalDateTime startDate;
+    private LocalDateTime endDate;
+}
